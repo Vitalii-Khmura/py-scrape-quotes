@@ -15,7 +15,7 @@ class Quote:
     tags: list[str]
 
 
-def get_num_page():
+def get_num_page() -> int:
     num_page = 1
 
     while True:
@@ -32,7 +32,7 @@ def get_num_page():
     return num_page
 
 
-def parse_quote_page(soup: Tag):
+def parse_quote_page(soup: Tag) -> Quote:
 
     text = getattr(soup.select_one(".text"), "text", "")
     author = getattr(soup.select_one(".author"), "text", "")
@@ -46,13 +46,13 @@ def parse_quote_page(soup: Tag):
     )
 
 
-def parse_single_quote(quote_soup: BeautifulSoup):
+def parse_single_quote(quote_soup: BeautifulSoup) -> [Quote]:
     page = quote_soup.select(".quote")
 
     return [parse_quote_page(quote) for quote in page]
 
 
-def parse_all_quote():
+def parse_all_quote() -> [Quote]:
     num_page = get_num_page()
 
     all_quotes = []
@@ -76,7 +76,6 @@ def write_data_in_cv_file(cs_file: str) -> None:
 
 def main(output_csv_path: str) -> None:
     write_data_in_cv_file(output_csv_path)
-    # print(parse_all_quote())
 
 
 if __name__ == "__main__":
