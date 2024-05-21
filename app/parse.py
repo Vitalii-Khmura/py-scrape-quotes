@@ -18,7 +18,9 @@ class Quote:
 def get_num_page() -> int:
     num_page = 1
 
-    while True:
+    status_code = requests.get(BASE_URL).status_code
+
+    while status_code == 200:
         page = requests.get(urljoin(BASE_URL, f"page/{num_page}/")).content
         soup = BeautifulSoup(page, "html.parser")
 
@@ -39,11 +41,7 @@ def parse_quote_page(soup: Tag) -> Quote:
     tags = [quote.text for quote in soup.select(".tag")]\
         if soup.select(".tags") else []
 
-    return Quote(
-        text,
-        author,
-        tags
-    )
+    return Quote(text, author, tags)
 
 
 def parse_single_quote(quote_soup: BeautifulSoup) -> [Quote]:
